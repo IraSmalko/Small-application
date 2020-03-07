@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:small_application/models/user.dart';
-
-import '../repository/repository.dart';
+import 'package:small_application/repository/repository.dart';
 
 part 'event.dart';
-
 part 'state.dart';
 
 class DataBloc extends Bloc<DataEvent, DataState> {
@@ -35,9 +34,6 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     if (event is Delete) {
       await repository.deleteUser(event.user);
     }
-    if (event is Delete) {
-      await repository.deleteUser(event.user);
-    }
     if (event is Insert) {
       await repository.insertUser(event.user);
     }
@@ -47,5 +43,9 @@ class DataBloc extends Bloc<DataEvent, DataState> {
   Future<void> close() {
     _subscription?.cancel();
     return super.close();
+  }
+
+  static DataBloc of(BuildContext context) {
+    return BlocProvider.of<DataBloc>(context);
   }
 }

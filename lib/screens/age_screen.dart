@@ -4,24 +4,22 @@ import 'package:small_application/bloc/bloc.dart';
 import 'package:small_application/widgets/item_tile.dart';
 
 import 'car_screen.dart';
+import 'insert_user_screen.dart';
 
-class AgeScreen extends StatefulWidget {
-  @override
-  _AgeScreenState createState() => _AgeScreenState();
-}
-
-class _AgeScreenState extends State<AgeScreen> {
+class AgeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.directions_car,
-            size: 24,
-          ),
-          onPressed: () => startCarScreen(context),
-        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.directions_car,
+              size: 24,
+            ),
+            onPressed: () => startCarScreen(context),
+          )
+        ],
         title: Text('Age screen'),
       ),
       body: BlocBuilder<DataBloc, DataState>(
@@ -43,7 +41,9 @@ class _AgeScreenState extends State<AgeScreen> {
                   user: state.users[index],
                   type: TileType.age,
                   onDeletePressed: (user) {
-                    BlocProvider.of<DataBloc>(context).add(Delete(user: user));
+                    DataBloc.of(context).add(Delete(user: user));
+                    Scaffold.of(context).showSnackBar(
+                        SnackBar(content: Text("${user.name} deleted")));
                   },
                 );
               },
@@ -55,6 +55,10 @@ class _AgeScreenState extends State<AgeScreen> {
             child: CircularProgressIndicator(),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => startInsertUserScreen(context),
       ),
     );
   }

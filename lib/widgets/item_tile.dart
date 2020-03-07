@@ -17,12 +17,13 @@ class ItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Text(user.name),
-      title: Text(type == TileType.car ? user.car : '${user.age}'),
-      trailing: IconButton(
-        icon: Icon(Icons.delete, color: Colors.red),
-        onPressed: () => onDeletePressed(user),
+    return Dismissible(
+      key: Key('${user.id}'),
+      background: Container(color: Colors.red),
+      onDismissed: (direction) => onDeletePressed(user),
+      child: ListTile(
+        leading: Text(user.name),
+        title: Text(type == TileType.car ? user.car : '${user.age}'),
       ),
     );
   }
