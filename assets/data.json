@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Vlad",
+    "age": 30,
+    "car": "Ford"
+  },
+  {
+    "name": "Dima",
+    "age": 45,
+    "car": "BMW"
+  },
+  {
+    "name": "Igor",
+    "age": 22,
+    "car": "Mercedes"
+  },
+  {
+    "name": "Sasha",
+    "age": 25,
+    "car": "Tesla"
+  }
+]
