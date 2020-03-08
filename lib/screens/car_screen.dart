@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:small_application/bloc/bloc.dart';
+import 'package:small_application/bloc/data_bloc.dart';
 import 'package:small_application/widgets/item_tile.dart';
 
 import 'insert_user_screen.dart';
@@ -18,7 +18,7 @@ class _CarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Car screen'),
+        title: Text('Car'),
       ),
       body: BlocBuilder<DataBloc, DataState>(
         builder: (context, state) {
@@ -33,17 +33,20 @@ class _CarScreen extends StatelessWidget {
                 child: Text('No content'),
               );
             }
-            return ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return ItemTile(
-                  user: state.users[index],
-                  type: TileType.car,
-                  onDeletePressed: (user) {
-                    DataBloc.of(context).add(Delete(user: user));
-                  },
-                );
-              },
-              itemCount: state.users.length,
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  return ItemTile(
+                    user: state.users[index],
+                    type: TileType.car,
+                    onDeletePressed: (user) {
+                      DataBloc.of(context).add(Delete(user: user));
+                    },
+                  );
+                },
+                itemCount: state.users.length,
+              ),
             );
           }
 

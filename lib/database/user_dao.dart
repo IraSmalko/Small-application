@@ -1,20 +1,20 @@
 import 'package:floor/floor.dart';
-import 'package:small_application/models/user.dart';
+import 'package:small_application/database/model/db_user.dart';
 
 @dao
 abstract class UserDao {
   @Query('SELECT * FROM user WHERE id = :id')
-  Future<User> findUserById(int id);
+  Future<DbUser> findUserById(int id);
 
   @Query('SELECT * FROM user')
-  Stream<List<User>> findAllUsersAsStream();
+  Stream<List<DbUser>> findAllUsersAsStream();
 
   @Insert(onConflict: OnConflictStrategy.REPLACE)
-  Future<void> insertUser(User user);
+  Future<void> insertUser(DbUser user);
 
   @Insert(onConflict: OnConflictStrategy.REPLACE)
-  Future<void> insertUsers(List<User> users);
+  Future<void> insertUsers(List<DbUser> users);
 
   @delete
-  Future<void> deleteUser(User user);
+  Future<void> deleteUser(DbUser user);
 }

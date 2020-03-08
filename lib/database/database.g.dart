@@ -81,7 +81,7 @@ class _$FlutterDatabase extends FlutterDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `User` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `age` INTEGER, `car` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `age` INTEGER, `car` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -97,21 +97,21 @@ class _$FlutterDatabase extends FlutterDatabase {
 class _$UserDao extends UserDao {
   _$UserDao(this.database, this.changeListener)
       : _queryAdapter = QueryAdapter(database, changeListener),
-        _userInsertionAdapter = InsertionAdapter(
+        _dbUserInsertionAdapter = InsertionAdapter(
             database,
-            'User',
-            (User item) => <String, dynamic>{
+            'user',
+            (DbUser item) => <String, dynamic>{
                   'id': item.id,
                   'name': item.name,
                   'age': item.age,
                   'car': item.car
                 },
             changeListener),
-        _userDeletionAdapter = DeletionAdapter(
+        _dbUserDeletionAdapter = DeletionAdapter(
             database,
-            'User',
+            'user',
             ['id'],
-            (User item) => <String, dynamic>{
+            (DbUser item) => <String, dynamic>{
                   'id': item.id,
                   'name': item.name,
                   'age': item.age,
@@ -125,41 +125,42 @@ class _$UserDao extends UserDao {
 
   final QueryAdapter _queryAdapter;
 
-  static final _userMapper = (Map<String, dynamic> row) => User(
+  static final _userMapper = (Map<String, dynamic> row) => DbUser(
       id: row['id'] as int,
       name: row['name'] as String,
       age: row['age'] as int,
       car: row['car'] as String);
 
-  final InsertionAdapter<User> _userInsertionAdapter;
+  final InsertionAdapter<DbUser> _dbUserInsertionAdapter;
 
-  final DeletionAdapter<User> _userDeletionAdapter;
+  final DeletionAdapter<DbUser> _dbUserDeletionAdapter;
 
   @override
-  Future<User> findUserById(int id) async {
+  Future<DbUser> findUserById(int id) async {
     return _queryAdapter.query('SELECT * FROM user WHERE id = ?',
         arguments: <dynamic>[id], mapper: _userMapper);
   }
 
   @override
-  Stream<List<User>> findAllUsersAsStream() {
+  Stream<List<DbUser>> findAllUsersAsStream() {
     return _queryAdapter.queryListStream('SELECT * FROM user',
-        tableName: 'User', mapper: _userMapper);
+        tableName: 'user', mapper: _userMapper);
   }
 
   @override
-  Future<void> insertUser(User user) async {
-    await _userInsertionAdapter.insert(user, sqflite.ConflictAlgorithm.replace);
+  Future<void> insertUser(DbUser user) async {
+    await _dbUserInsertionAdapter.insert(
+        user, sqflite.ConflictAlgorithm.replace);
   }
 
   @override
-  Future<void> insertUsers(List<User> users) async {
-    await _userInsertionAdapter.insertList(
+  Future<void> insertUsers(List<DbUser> users) async {
+    await _dbUserInsertionAdapter.insertList(
         users, sqflite.ConflictAlgorithm.replace);
   }
 
   @override
-  Future<void> deleteUser(User user) async {
-    await _userDeletionAdapter.delete(user);
+  Future<void> deleteUser(DbUser user) async {
+    await _dbUserDeletionAdapter.delete(user);
   }
 }

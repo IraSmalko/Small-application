@@ -6,15 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:small_application/models/user.dart';
 import 'package:small_application/repository/repository.dart';
 
-part 'event.dart';
-part 'state.dart';
+part 'data_event.dart';
+part 'data_state.dart';
 
 class DataBloc extends Bloc<DataEvent, DataState> {
-  final Repository repository;
+  final Repository _repository;
   StreamSubscription _subscription;
 
-  DataBloc(this.repository) {
-    _subscription = repository
+  DataBloc(this._repository) {
+    _subscription = _repository
         .getUsers()
         .handleError((e) => ErrorEvent())
         .listen((items) => add(LoadedEvent(users: items)));
@@ -32,10 +32,10 @@ class DataBloc extends Bloc<DataEvent, DataState> {
       yield Loaded(users: event.users);
     }
     if (event is Delete) {
-      await repository.deleteUser(event.user);
+      await _repository.deleteUser(event.user);
     }
     if (event is Insert) {
-      await repository.insertUser(event.user);
+      await _repository.insertUser(event.user);
     }
   }
 

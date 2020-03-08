@@ -1,4 +1,4 @@
-part of 'bloc.dart';
+part of 'data_bloc.dart';
 
 abstract class DataState extends Equatable {
   const DataState();

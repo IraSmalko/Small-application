@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:small_application/bloc/bloc.dart';
+import 'package:small_application/bloc/data_bloc.dart';
 import 'package:small_application/models/user.dart';
 
 startInsertUserScreen(BuildContext context) {
@@ -73,6 +72,58 @@ class _InsertUserScreenState extends State<_InsertUserScreen> {
   }
 
   Widget get inputSection {
+    var validator = (value) {
+      if (value.isEmpty) {
+        return 'Please enter some text';
+      }
+      return null;
+    };
+
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          TextFormField(
+            controller: _nameController,
+            focusNode: _nameNode,
+            textInputAction: TextInputAction.next,
+            maxLines: 1,
+            decoration: _inputDecoration('Name'),
+            validator: validator,
+            onFieldSubmitted: (term) {
+              FocusScope.of(context).requestFocus(_carNode);
+            },
+          ),
+          SizedBox(height: 16.0),
+          TextFormField(
+            controller: _carController,
+            focusNode: _carNode,
+            textInputAction: TextInputAction.next,
+            maxLines: 1,
+            decoration: _inputDecoration('Car'),
+            validator: validator,
+            onFieldSubmitted: (term) {
+              FocusScope.of(context).requestFocus(_ageNode);
+            },
+          ),
+          SizedBox(height: 16.0),
+          TextFormField(
+            controller: _ageController,
+            focusNode: _ageNode,
+            textInputAction: TextInputAction.done,
+            maxLines: 1,
+            cursorColor: const Color(0xFF1f7eff),
+            keyboardType: TextInputType.numberWithOptions(),
+            decoration: _inputDecoration('Age'),
+            validator: validator,
+          ),
+        ],
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration(String labelText) {
     const errorStyle = TextStyle(color: const Color(0xFFff5353), fontSize: 12);
 
     const focusedBorder = OutlineInputBorder(
@@ -99,98 +150,18 @@ class _InsertUserScreenState extends State<_InsertUserScreen> {
       borderRadius: BorderRadius.all(const Radius.circular(24.0)),
     );
 
-    var validator = (value) {
-      if (value.isEmpty) {
-        return 'Please enter some text';
-      }
-      return null;
-    };
-
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          TextFormField(
-            controller: _nameController,
-            focusNode: _nameNode,
-            textInputAction: TextInputAction.next,
-            maxLines: 1,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 20,
-              ),
-              filled: true,
-              focusedBorder: focusedBorder,
-              enabledBorder: enabledBorder,
-              errorBorder: errorBorder,
-              focusedErrorBorder: errorBorder,
-              labelText: 'Name',
-              errorStyle: errorStyle,
-              fillColor: Colors.white,
-              focusColor: Colors.white,
-            ),
-            validator: validator,
-            onFieldSubmitted: (term) {
-              FocusScope.of(context).requestFocus(_carNode);
-            },
-          ),
-          SizedBox(height: 16.0),
-          TextFormField(
-            controller: _carController,
-            focusNode: _carNode,
-            textInputAction: TextInputAction.next,
-            maxLines: 1,
-            decoration: InputDecoration(
-              errorMaxLines: 3,
-              filled: true,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 20,
-              ),
-              focusedBorder: focusedBorder,
-              enabledBorder: enabledBorder,
-              errorBorder: errorBorder,
-              focusedErrorBorder: errorBorder,
-              labelText: 'Car',
-              errorStyle: errorStyle,
-              fillColor: Colors.white,
-              focusColor: Colors.white,
-            ),
-            validator: validator,
-            onFieldSubmitted: (term) {
-              FocusScope.of(context).requestFocus(_ageNode);
-            },
-          ),
-          SizedBox(height: 16.0),
-          TextFormField(
-            controller: _ageController,
-            focusNode: _ageNode,
-            textInputAction: TextInputAction.done,
-            maxLines: 1,
-            cursorColor: const Color(0xFF1f7eff),
-            keyboardType: TextInputType.numberWithOptions(),
-            decoration: InputDecoration(
-              errorMaxLines: 3,
-              filled: true,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 20,
-              ),
-              focusedBorder: focusedBorder,
-              enabledBorder: enabledBorder,
-              errorBorder: errorBorder,
-              focusedErrorBorder: errorBorder,
-              labelText: 'Age',
-              errorStyle: errorStyle,
-              fillColor: Colors.white,
-              focusColor: Colors.white,
-            ),
-            validator: validator,
-          ),
-        ],
-      ),
+    return InputDecoration(
+      errorMaxLines: 3,
+      filled: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      focusedBorder: focusedBorder,
+      enabledBorder: enabledBorder,
+      errorBorder: errorBorder,
+      focusedErrorBorder: errorBorder,
+      labelText: labelText,
+      errorStyle: errorStyle,
+      fillColor: Colors.white,
+      focusColor: Colors.white,
     );
   }
 
