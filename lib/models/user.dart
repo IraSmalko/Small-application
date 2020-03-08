@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 
+@immutable
 class User {
   final int id;
   final String name;

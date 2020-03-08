@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:small_application/models/user.dart';
+import 'package:meta/meta.dart';
 
 @Entity(tableName: 'user')
 class DbUser {
@@ -19,7 +19,7 @@ class DbUser {
 
   User toLocal() {
     return User(
-      id: null,
+      id: this.id,
       name: this.name,
       age: this.age,
       car: this.car,
