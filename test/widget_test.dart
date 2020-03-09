@@ -33,14 +33,6 @@ void main() {
     });
 
     testWidgets('insertUser', (WidgetTester tester) async {
-      await tester.runAsync(() async {
-        database =
-            await $FloorFlutterDatabase.inMemoryDatabaseBuilder().build();
-        userDao = database.userDao;
-        await _initDatabase(userDao);
-      });
-      await _awaitFrame(tester);
-
       await tester.pumpWidget(MyApp(userDao));
       await _awaitFrame(tester);
       expect(find.text('Sasha'), findsOneWidget);
