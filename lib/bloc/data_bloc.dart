@@ -14,10 +14,11 @@ class DataBloc extends Bloc<DataEvent, DataState> {
   StreamSubscription _subscription;
 
   DataBloc(this._repository) {
-    _subscription = _repository
-        .getUsers()
-        .handleError((e) => ErrorEvent())
-        .listen((items) => add(LoadedEvent(users: items)));
+    _subscription = _repository.getUsers().handleError((e) {
+      add(ErrorEvent());
+    }).listen((items) {
+      add(LoadedEvent(users: items));
+    });
   }
 
   @override

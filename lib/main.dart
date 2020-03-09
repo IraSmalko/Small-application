@@ -32,6 +32,8 @@ _initDatabase(UserDao userDao) async {
   await userDao.insertUsers(users);
 }
 
+final contentKey = GlobalKey();
+
 class MyApp extends StatelessWidget {
   final UserDao dao;
 
@@ -44,6 +46,7 @@ class MyApp extends StatelessWidget {
       child: BlocProvider(
         create: (context) => DataBloc(Repository.of(context)),
         child: MaterialApp(
+          key: contentKey,
           theme: ThemeData(
             primarySwatch: Colors.blueGrey,
             fontFamily: 'Oswald',

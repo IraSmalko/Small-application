@@ -33,20 +33,19 @@ class _CarScreen extends StatelessWidget {
                 child: Text('No content'),
               );
             }
-            return Padding(
+            return ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return ItemTile(
-                    user: state.users[index],
-                    type: TileType.car,
-                    onDeletePressed: (user) {
-                      DataBloc.of(context).add(Delete(user: user));
-                    },
-                  );
-                },
-                itemCount: state.users.length,
-              ),
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return ItemTile(
+                  user: state.users[index],
+                  type: TileType.car,
+                  onDeletePressed: (user) {
+                    DataBloc.of(context).add(Delete(user: user));
+                  },
+                );
+              },
+              itemCount: state.users.length,
             );
           }
 

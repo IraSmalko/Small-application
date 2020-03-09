@@ -51,23 +51,6 @@ class ItemTile extends StatelessWidget {
               ],
             ),
           ),
-          confirmDismiss: (_) async {
-            ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
-                controller;
-            controller = Scaffold.of(context).showSnackBar(
-              SnackBar(
-                duration: Duration(seconds: 1),
-                content: Text('Really?'),
-                action: SnackBarAction(
-                  label: "No",
-                  textColor: Colors.yellow,
-                  onPressed: () => controller.close(),
-                ),
-              ),
-            );
-            final reason = await controller.closed;
-            return reason == SnackBarClosedReason.timeout;
-          },
           onDismissed: (direction) => onDeletePressed(user),
           child: Container(
             color: Colors.red,

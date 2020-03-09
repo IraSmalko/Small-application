@@ -25,6 +25,7 @@ class _InsertUserScreenState extends State<_InsertUserScreen> {
   TextEditingController _nameController;
   TextEditingController _carController;
   TextEditingController _ageController;
+  String _ageError = '';
 
   @override
   void initState() {
@@ -35,7 +36,10 @@ class _InsertUserScreenState extends State<_InsertUserScreen> {
 
     _nameController = TextEditingController();
     _carController = TextEditingController();
-    _ageController = TextEditingController();
+    _ageController = TextEditingController()
+      ..addListener(() {
+        _ageError = '';
+      });
   }
 
   @override
@@ -79,6 +83,15 @@ class _InsertUserScreenState extends State<_InsertUserScreen> {
       return null;
     };
 
+    var ageValidator = (value) {
+      if (_ageError.isNotEmpty) {
+        return _ageError;
+      } else if (value.isEmpty) {
+        return 'Please enter some integer';
+      }
+      return null;
+    };
+
     return Form(
       key: _formKey,
       child: Column(
@@ -116,7 +129,7 @@ class _InsertUserScreenState extends State<_InsertUserScreen> {
             cursorColor: const Color(0xFF1f7eff),
             keyboardType: TextInputType.numberWithOptions(),
             decoration: _inputDecoration('Age'),
-            validator: validator,
+            validator: ageValidator,
           ),
         ],
       ),
@@ -183,17 +196,25 @@ class _InsertUserScreenState extends State<_InsertUserScreen> {
       ),
       onPressed: () {
         if (_formKey.currentState.validate()) {
-          DataBloc.of(context).add(
-            Insert(
-              user: User(
-                id: null,
-                name: _nameController.text,
-                age: int.parse(_ageController.text),
-                car: _carController.text,
+          final age = int.tryParse(_ageController.text);
+          if (age == null)
+            setState(() {
+              _ageError = 'Age must be an integer';
+              _formKey.currentState.validate();
+            });
+          else {
+            DataBloc.of(context).add(
+              Insert(
+                user: User(
+                  id: null,
+                  name: _nameController.text,
+                  age: age,
+                  car: _carController.text,
+                ),
               ),
-            ),
-          );
-          Navigator.pop(context);
+            );
+            Navigator.pop(context);
+          }
         }
       },
     );

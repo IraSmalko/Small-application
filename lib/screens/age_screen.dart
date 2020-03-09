@@ -35,22 +35,21 @@ class AgeScreen extends StatelessWidget {
                 child: Text('No content'),
               );
             }
-            return Padding(
+            return ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return ItemTile(
-                    user: state.users[index],
-                    type: TileType.age,
-                    onDeletePressed: (user) {
-                      DataBloc.of(context).add(Delete(user: user));
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("${user.name} deleted")));
-                    },
-                  );
-                },
-                itemCount: state.users.length,
-              ),
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return ItemTile(
+                  user: state.users[index],
+                  type: TileType.age,
+                  onDeletePressed: (user) {
+                    DataBloc.of(context).add(Delete(user: user));
+                    Scaffold.of(context).showSnackBar(
+                        SnackBar(content: Text("${user.name} deleted")));
+                  },
+                );
+              },
+              itemCount: state.users.length,
             );
           }
 
